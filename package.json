@@ -1,0 +1,27 @@
+{
+  "name": "playlistcolours",
+  "version": "1.0.0",
+  "description": "web app to generate a colour palette for your playlist",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "init": "^0.1.2",
+    "nodemon": "^2.0.3",
+    "npm": "^6.14.4",
+    "pug": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruwanidealwis/playlistColours.git"
+  },
+  "author": "me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruwanidealwis/playlistColours/issues"
+  },
+  "homepage": "https://github.com/ruwanidealwis/playlistColours#readme"
+}
