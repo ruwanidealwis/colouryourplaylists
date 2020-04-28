@@ -1,0 +1,23 @@
+doctype html
+html(lang='en')
+ head
+   title Paylist of Colours
+ body
+   h1 Here are your playlists!
+   div.container
+   ul
+   each playlist in playListArray
+     - val = playlist.name
+     - id  = playlist.id
+       a(href='/#{id}') #{val}
+- if (palette)
+    div#palette
+      ul
+      each colour in palette
+        li #{colour}
+- if (info)
+   div#information
+      - name = playlist.name
+        p #{name}
+        p See how these values influenced the 1st 3rd and 5th colours!2nd and 4th are there to create a more uniform palette
+        p Click on each song on the playlist to see how the palette changes!

@@ -33,6 +33,12 @@ class playListInfo {
   get name(){
     return this.__name;
   }
+  get id(){
+    return this.__id;
+  }
+  get audioFeatures(){
+    return this.__audioFeatures;
+  }
 };
 
 class songInfo {
@@ -57,6 +63,9 @@ class songInfo {
   }
   get audioFeatures(){
     return this.__audioFeatures;
+  }
+  get id(){
+    return this.__id;
   }
 }
 
@@ -94,7 +103,7 @@ var spotifyApi = new SpotifyWebApi({
 
 let authorizeURL = spotifyApi.createAuthorizeURL(scopes, state); //generated
 exports.authorizeURL=authorizeURL; //export the value
-console.log(authorizeURL); //the authorization url;;
+//console.log(authorizeURL); //the authorization url;;
 
 // Retrieve an access token and a refresh token
 exports.callbackMethod = (req,res)=> {
@@ -118,15 +127,18 @@ spotifyApi.authorizationCodeGrant(req.query.code).then
    return getPlaylistInformation(data);
  }).
  then ( data => {
-   console.log("hi");
+   //console.log("hi");
    //console.log(data);
   return getAveragePlaylistInfo(data);
  }).then ( data =>
    {
-     console.log(data)
+     exports.exportData = data; //export all the data of the playlists..
+     //console.log(data);
+     res.redirect('playlistColours');
    }
  );
 };
+
 
 
 function getUserInformation()
@@ -135,7 +147,7 @@ function getUserInformation()
      //console.log(data.body.id);
      userInfo.id=data.body.id;
      userInfo.email=data.body.email;
-     console.log(userInfo);
+     //console.log(userInfo);
      return userInfo;
 
    });
@@ -154,7 +166,7 @@ function getAveragePlaylistInfo(playlistArray)
  let minorCount=1;
  playlistArray.forEach(playlist =>
    {
-     console.log(playlist);
+     //console.log(playlist);
      //avgValence = playlist.songs => playlist.songs.reduce((a,b) => a + b, 0) / playlist.songs.length
     playlist.songs.forEach( song =>
    {
@@ -171,12 +183,12 @@ function getAveragePlaylistInfo(playlistArray)
        minorCount++;
      }
    });
- console.log(avgValence);console.log(avgDanceability);console.log(avgEnergy);
+ //console.log(avgValence);console.log(avgDanceability);console.log(avgEnergy);
   avgValence =  avgValence/playlist.songs.length;
   avgDanceability =  avgDanceability/playlist.songs.length;
   avgEnergy =  avgEnergy/playlist.songs.length;
-  console.log(minorCount);
-  console.log(majorCount);
+  //console.log(minorCount);
+  //console.log(majorCount);
   if(minorCount>majorCount)  {
     avgMode = 0;
   }
@@ -204,10 +216,10 @@ async function getPlaylistAudioFeatures(songsID,playlistObj)
     //console.log(audioInfo);
     if(audioInfo==null)
     {
-      console.log(playlistObj.name);
+      //console.log(playlistObj.name);
     }
     playlistObj.songs[index].audioFeatures = new audioFeatures(audioInfo.valence,audioInfo.energy,audioInfo.mode,audioInfo.danceability); //need to add more information
-    console.log(playlistObj.songs[index].audioFeatures);
+    //console.log(playlistObj.songs[index].audioFeatures);
     //console.log(`done ${playlistObj.name} and ${playlistObj.songs[index].name}`);
     index++;
     }
@@ -242,7 +254,7 @@ async function getPlaylistInformation(userData)
       let playlist = data.body.items;
       //console.log(playlist);
        for(let i=0;i< data.body.items.length;i++){
-            console.log(data.body.items.length);
+            //console.log(data.body.items.length);
             var objReturn = async function(userData,playlist)
             {
               return getMusicInfo(userData.id,playlist[i].id,playlist[i].name).
