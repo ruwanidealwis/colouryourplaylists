@@ -3,9 +3,8 @@ let crypto = require("crypto");
 let clientId = "eb8c8baf926b4a2996986cd21794f34f";
 let clientSecret = "a3ddbd0186b04085988a1eb73777e501";
 let redirectUri = "https://colouryourplaylists.herokuapp.com/callback";
-if(process.env.PORT==null)
-{
-   redirectUri = "http://localhost:8000/callback";
+if (process.env.PORT == null) {
+  redirectUri = "http://localhost:8000/callback";
 }
 let scopes = ["playlist-read-private", "user-read-email"]; //get the users account and their private playlists
 let state = crypto.randomBytes(15).toString("hex"); //random state generator
@@ -108,7 +107,7 @@ class audioFeatures {
 var spotifyApi = new SpotifyWebApi({
   clientId: clientId,
   clientSecret: clientSecret,
-  redirectUri: redirectUri, //will have to change this later
+  redirectUri: redirectUri //will have to change this later
 });
 
 let authorizeURL = spotifyApi.createAuthorizeURL(scopes, state); //generated
@@ -120,7 +119,7 @@ exports.callbackMethod = (req, res) => {
     .authorizationCodeGrant(req.query.code)
     .then(
       //promise function
-      (data) => {
+      data => {
         console.log("The token expires in " + data.body["expires_in"]);
         console.log("The access token is " + data.body["access_token"]);
         console.log("The refresh token is " + data.body["refresh_token"]);
@@ -133,7 +132,7 @@ exports.callbackMethod = (req, res) => {
       }
     )
     .then(
-      (data) => {
+      data => {
         return getPlaylistInformation(data);
       },
       function (err) {
@@ -141,7 +140,7 @@ exports.callbackMethod = (req, res) => {
       }
     )
     .then(
-      (data) => {
+      data => {
         console.log(data);
         return getAveragePlaylistInfo(data);
       },
@@ -150,8 +149,9 @@ exports.callbackMethod = (req, res) => {
       }
     )
     .then(
-      (data) => {
+      data => {
         req.session.exportData = data; //export all the data of the playlists..
+        console.log(data);
         exports.exportData = data;
         req.session.username = userInfo.id;
         res.redirect("playlistColours");
@@ -164,7 +164,7 @@ exports.callbackMethod = (req, res) => {
 
 function getUserInformation() {
   return spotifyApi.getMe().then(
-    (data) => {
+    data => {
       userInfo.id = data.body.id;
       userInfo.email = data.body.email;
       return userInfo;
@@ -182,8 +182,8 @@ function getAveragePlaylistInfo(playlistArray) {
   let avgMode = -3;
   let majorCount = 0;
   let minorCount = 1;
-  playlistArray.forEach((playlist) => {
-    playlist.songs.forEach((song) => {
+  playlistArray.forEach(playlist => {
+    playlist.songs.forEach(song => {
       //console.log(playlist);
 
       avgValence = avgValence + song.audioFeatures.valence;
@@ -223,7 +223,7 @@ async function getPlaylistAudioFeatures(songsID, playlistObj) {
   let returnVal = spotifyApi.getAudioFeaturesForTracks(songsID).then(
     function (data) {
       let index = 0;
-      data.body.audio_features.forEach((audioInfo) => {
+      data.body.audio_features.forEach(audioInfo => {
         playlistObj.songs[index].audioFeatures = new audioFeatures(
           audioInfo.valence,
           audioInfo.energy,
@@ -252,30 +252,31 @@ async function getPlaylistInformation(userData) {
       .then(
         async function (data) {
           let playlist = data.body.items;
+          if (playlist != null) {
+            for (let i = 0; i < data.body.items.length; i++) {
+              var objReturn = async function (userData, playlist) {
+                return getMusicInfo(
+                  userData.id,
+                  playlist[i].id,
+                  playlist[i].name,
+                  playlist[i].images[0].url
+                ).then(
+                  async function (playlistObj) {
+                    songIdArray = [];
 
-          for (let i = 0; i < data.body.items.length; i++) {
-            var objReturn = async function (userData, playlist) {
-              return getMusicInfo(
-                userData.id,
-                playlist[i].id,
-                playlist[i].name,
-                playlist[i].images[0].url
-              ).then(
-                async function (playlistObj) {
-                  songIdArray = [];
-
-                  for (let i = 0; i < playlistObj.songs.length; i++) {
-                    songIdArray.push(playlistObj.songs[i].id);
+                    for (let i = 0; i < playlistObj.songs.length; i++) {
+                      songIdArray.push(playlistObj.songs[i].id);
+                    }
+                    return getPlaylistAudioFeatures(songIdArray, playlistObj);
+                  },
+                  function (err) {
+                    console.log("Something went wrong!", err);
                   }
-                  return getPlaylistAudioFeatures(songIdArray, playlistObj);
-                },
-                function (err) {
-                  console.log("Something went wrong!", err);
-                }
-              ); //gets array of the songs
-            };
-            let completedPlayListObject = await objReturn(userData, playlist);
-            playListArray.push(completedPlayListObject);
+                ); //gets array of the songs
+              };
+              let completedPlayListObject = await objReturn(userData, playlist);
+              playListArray.push(completedPlayListObject);
+            }
           }
 
           //add to completed playlist
@@ -298,16 +299,20 @@ async function getMusicInfo(userId, playlistId, playlistName, imageURL) {
     .getPlaylistTracks(playlistId, {
       offset: 1,
       limit: 100,
-      fields: "items",
+      fields: "items"
     })
     .then(
       function (data) {
-        data.body.items.forEach((songItem) => {
-          if (songItem.is_local != true && songItem.track.name != "" && songItem!="null") {
+        data.body.items.forEach(songItem => {
+          if (
+            songItem.is_local != true &&
+            songItem.track.name != "" &&
+            songItem != "null"
+          ) {
             //only take audio analysis if its not a local file
             let artistArray = [];
             //add code to get the audio features for each song
-            songItem.track.artists.forEach((artistInfo) =>
+            songItem.track.artists.forEach(artistInfo =>
               artistArray.push(artistInfo.name)
             );
             let song = new songInfo(
