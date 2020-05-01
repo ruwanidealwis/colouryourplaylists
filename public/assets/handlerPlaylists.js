@@ -41,23 +41,35 @@ $(document).ready(function () {
           " mode";
         let colour =
           "This colour helps create a more visually pleasing palette";
+          //default text sizes
+        $("#name").css("font-size", 16);
+        $("#description").css("font-size", 14);
+        if (data.playlistName.length > 34 && data.playlistName.length <= 65) {
+          //will overflow to the next line
+          $("#name").css("font-size", 14);
+          $("#description").css("font-size", 13);
+        }
+        if (data.playlistName.length > 65) {
+          $("#name").css("font-size", 12); //overflow to next two lines
+          $("#description").css("font-size", 12);
+        }
 
         $("#name").text(data.playlistName);
         $("#description").text("a playlist by " + data.name);
         $("#colour1").css({
-          "background-color": "rgb(" + data.palette[0] + ")",
+          "background-color": "rgb(" + data.palette[0] + ")"
         });
         $("#colour2").css({
-          "background-color": "rgb(" + data.palette[1] + ")",
+          "background-color": "rgb(" + data.palette[1] + ")"
         });
         $("#colour3").css({
-          "background-color": "rgb(" + data.palette[2] + ")",
+          "background-color": "rgb(" + data.palette[2] + ")"
         });
         $("#colour4").css({
-          "background-color": "rgb(" + data.palette[3] + ")",
+          "background-color": "rgb(" + data.palette[3] + ")"
         });
         $("#colour5").css({
-          "background-color": "rgb(" + data.palette[4] + ")",
+          "background-color": "rgb(" + data.palette[4] + ")"
         });
         $("#cover").attr("src", data.coverImage);
         $("#Colour1Info").text(colour1Text);
@@ -71,7 +83,7 @@ $(document).ready(function () {
         window.alert(
           "there was an error. Please try again in a couple of minutes"
         );
-      },
+      }
     });
     return false;
   });
@@ -93,6 +105,19 @@ $(document).ready(function () {
             artistString = artistString + " & ";
           }
         });
+        //default text sizes
+        $("#name").css("font-size", 16);
+        $("#description").css("font-size", 14);
+
+        if (data.songName.length > 34 && data.songName.length <= 65) {
+          //will overflow to the next line
+          $("#name").css("font-size", 14);
+          $("#description").css("font-size", 13);
+        }
+        if (data.songName.length > 65) {
+          $("#name").css("font-size", 12);
+          $("#description").css("font-size", 12);
+        }
         $(".box").css("border", "none");
         $(".card").css("visibility", "visible");
         $("#name").text(data.songName);
@@ -136,23 +161,23 @@ $(document).ready(function () {
         $("#Colour5Info").text(colour3Text);
 
         $("#colour1").css({
-          "background-color": "rgb(" + data.palette[0] + ")",
+          "background-color": "rgb(" + data.palette[0] + ")"
         });
         $("#colour1").css({ "border-color": "rgb(" + data.palette[0] + ")" });
         $("#colour2").css({
-          "background-color": "rgb(" + data.palette[1] + ")",
+          "background-color": "rgb(" + data.palette[1] + ")"
         });
         $("#colour2").css({ "border-color": "rgb(" + data.palette[1] + ")" });
         $("#colour3").css({
-          "background-color": "rgb(" + data.palette[2] + ")",
+          "background-color": "rgb(" + data.palette[2] + ")"
         });
         $("#colour3").css({ "border-color": "rgb(" + data.palette[2] + ")" });
         $("#colour4").css({
-          "background-color": "rgb(" + data.palette[3] + ")",
+          "background-color": "rgb(" + data.palette[3] + ")"
         });
         $("#colour4").css({ "border-color": "rgb(" + data.palette[3] + ")" });
         $("#colour5").css({
-          "background-color": "rgb(" + data.palette[4] + ")",
+          "background-color": "rgb(" + data.palette[4] + ")"
         });
         $("#colour5").css({ "border-color": "rgb(" + data.palette[4] + ")" });
 
@@ -160,8 +185,10 @@ $(document).ready(function () {
         // window.alert(newUrl);
         //window.history.pushState("object or string", "Title", "/new-url");
         //history.pushState({}, null, newUrl);
-      },
+      }
     });
     return false;
   });
 });
+
+function detectOverflow(String) {}

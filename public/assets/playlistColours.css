@@ -94,6 +94,11 @@ ul {
 
 .card {
   border-radius: 0px;
+  min-height: 305px;
+  min-width: 237px;
+  max-height: 305px;
+  max-width: 237px;
+  margin: 1%;
 }
 p {
   padding: 0%;
@@ -106,6 +111,7 @@ p {
 .card-title {
   font-family: "Assistant", sans-serif;
   font-weight: bold;
+  font-size: 16px;
 }
 .navbarText {
   font-weight: light;
