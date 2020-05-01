@@ -120,13 +120,13 @@ $(document).ready(function () {
           colourInformation[1].name +
           " because the song evokes " +
           colourInformation[1].valence +
-          "sad/angry feeling(s)";
+          " sad/angry feeling(s)";
         let colour3Text =
           "This Colour is " +
           colourInformation[2].name +
-          " because the song is " +
+          " because the song is in " +
           colourInformation[2].mode +
-          "mode";
+          " mode";
         let colour =
           "This colour helps create a more visually pleasing palette";
         $("#Colour1Info").text(colour1Text);
