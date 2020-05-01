@@ -1,12 +1,11 @@
-
 //require all modules
-let express = require('express');
-let index = require('./routes/index')
+let express = require("express");
+let index = require("./routes/index");
 
 //require created modules
 let app = express();
 //set view engine
-app.set('view engine', 'pug');
+app.set("view engine", "pug");
 //app.set('views', path.join(__dirname, 'views'));
 //middleware function to redirect to login if user goes to a link
 /*app.use(function(req, res, next) {
@@ -19,7 +18,7 @@ app.set('view engine', 'pug');
     }
 });*/
 //require node module for the spotify api
-app.use(express.static('./public') );
+app.use(express.static("./public"));
 //set up listening on local host
 let port = 3000;
 app.listen(port, () => console.log(`app listening on port ${port}`)); //app is now listening on port
