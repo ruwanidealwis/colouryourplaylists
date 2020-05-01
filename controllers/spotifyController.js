@@ -5,7 +5,7 @@ let clientSecret = "a3ddbd0186b04085988a1eb73777e501";
 let redirectUri = "https://colouryourplaylists.herokuapp.com/callback";
 if(process.env.PORT==null)
 {
-  let redirectUri = "https://localhost:8000/callback";
+   redirectUri = "http://localhost:8000/callback";
 }
 let scopes = ["playlist-read-private", "user-read-email"]; //get the users account and their private playlists
 let state = crypto.randomBytes(15).toString("hex"); //random state generator

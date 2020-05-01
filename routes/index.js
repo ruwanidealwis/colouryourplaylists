@@ -6,6 +6,9 @@ let express = require("express");
 
 //handles all the possible routes
 module.exports = function (app) {
+  app.get("*", (req, res) => {
+    res.render("main.pug"); //redirect to authorization url
+  });
   app.get("/", (req, res) => {
     res.render("main.pug"); //redirect to authorization url
   });
