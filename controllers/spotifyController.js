@@ -224,6 +224,7 @@ async function getPlaylistAudioFeatures(songsID, playlistObj) {
     function (data) {
       let index = 0;
       data.body.audio_features.forEach(audioInfo => {
+        console.log(playlistObj.songs[index]);
         playlistObj.songs[index].audioFeatures = new audioFeatures(
           audioInfo.valence,
           audioInfo.energy,
@@ -253,9 +254,12 @@ async function getPlaylistInformation(userData) {
         async function (data) {
           let playlist = data.body.items;
           console.log(playlist);
-          if (playlist != null) {
+          if (playlist != null ) {
             for (let i = 0; i < data.body.items.length; i++) {
+              console.log("type  & name" + playlist[i].type + playlist[i].name);
+              console.log(playlist[i]);
               var objReturn = async function (userData, playlist) {
+
                 return getMusicInfo(
                   userData.id,
                   playlist[i].id,
@@ -263,12 +267,20 @@ async function getPlaylistInformation(userData) {
                   playlist[i].images[0].url
                 ).then(
                   async function (playlistObj) {
-                    songIdArray = [];
+                    console.log(playlistObj);
+                    if(playlistObj.songs.length!=0) {
+                      songIdArray = [];
 
-                    for (let i = 0; i < playlistObj.songs.length; i++) {
+                     for (let i = 0; i < playlistObj.songs.length; i++) {
                       songIdArray.push(playlistObj.songs[i].id);
+                     }
+                     return getPlaylistAudioFeatures(songIdArray, playlistObj);
                     }
-                    return getPlaylistAudioFeatures(songIdArray, playlistObj);
+                    else
+                    {
+                      return null;
+                    }
+                    
                   },
                   function (err) {
                     console.log("Something went wrong!", err);
@@ -276,12 +288,15 @@ async function getPlaylistInformation(userData) {
                 ); //gets array of the songs
               };
               let completedPlayListObject = await objReturn(userData, playlist);
+              if(completedPlayListObject!=null) {
               playListArray.push(completedPlayListObject);
-            }
+              }
+            
+          }
           }
 
           //add to completed playlist
-
+          console.log(playListArray);
           return playListArray;
         },
         function (err) {
@@ -305,11 +320,11 @@ async function getMusicInfo(userId, playlistId, playlistName, imageURL) {
     .then(
       function (data) {
         data.body.items.forEach(songItem => {
-          if (
-            songItem.is_local != true &&
-            songItem.track.name != "" &&
-            songItem != "null"
-          ) {
+          console.log(songItem);
+          console.log(songItem.track.type);
+          if (songItem.is_local != true && songItem.track != null && (typeof songItem.track !== 'undefined')) {
+            if(songItem.track.name!=null && songItem.track.type==="track" ) {
+              console.log(songItem);
             //only take audio analysis if its not a local file
             let artistArray = [];
             //add code to get the audio features for each song
@@ -324,9 +339,14 @@ async function getMusicInfo(userId, playlistId, playlistName, imageURL) {
               songItem.track.album.images[0].url
             );
             artistArray = []; //empty the array so it can be reassigned
+            console.log("music info");
+            console.log(songItem);
             songArray.push(song);
+            console.log(songArray);
           }
+        }
         });
+        
         let playlistObj = new playListInfo(
           playlistName,
           playlistId,
@@ -334,6 +354,8 @@ async function getMusicInfo(userId, playlistId, playlistName, imageURL) {
           imageURL
         );
         return playlistObj; //return a new playlist object}
+    
+        
       },
       function (err) {
         console.log("Something went wrong!", err);
