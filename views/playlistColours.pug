@@ -18,15 +18,15 @@ html(lang='en')
               h5 #{name}'s Playlists
               ul.list-unstyled.components#allUserInfo
                 each playlist in playListArray
-                  - var playlistName = playlist.name
-                  - var playListid  = playlist.id
+                  - var playlistName = playlist.__name
+                  - var playListid  = playlist.__id
                   li
                     button(class="playlistList btn active playlistNameButton" id=playListid data-toggle="dropdown collapse" aria-pressed="true" aria-expanded="false") #{playlistName}
                     button.btn.dropdown-toggle.dropdown-toggle-split(type='button' data-toggle='dropdown')    
                     div.dropdown-menu
-                      each song in playlist.songs
-                            - var songName = song.name
-                            - var songId  = song.id
+                      each song in playlist.__songs
+                            - var songName = song.__name
+                            - var songId  = song.__id
                               a.songList.dropdown-item(href='#' id=songId) #{songName}                 
             div.col-sm-8        
                 div#info.no-gutters
@@ -53,7 +53,7 @@ html(lang='en')
                           | Click on a playlist from the left corner to generate a colour palette (using this cool 
                           a.link(href='http://colormind.io/api-access/' target="_blank")  API
                           | )
-                        .algorithmInfo Hover over the colours to see why it was generatedand click on each song of the playlist to see how it changes
+                        .algorithmInfo Hover over the colours to see why it was generated and click on each song of the playlist to see how it changes
 
                 div#palette
                     div.row.span4.justify-content-center

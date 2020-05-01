@@ -1,22 +1,19 @@
 //require all modules
 let express = require("express");
 let index = require("./routes/index");
-
+let session = require("express-session"); //allowing user sessions
 //require created modules
 let app = express();
 //set view engine
 app.set("view engine", "pug");
-//app.set('views', path.join(__dirname, 'views'));
-//middleware function to redirect to login if user goes to a link
-/*app.use(function(req, res, next) {
-    if (req.session.user == null){
-// if user is not logged-in redirect back to login page //
-        alert("redirected to main");
-        res.redirect('/login');
-    }   else{
-        next();
-    }
-});*/
+//app.use(cookieParser());
+app.use(
+  session({
+    secret: "Shh, its a secret!",
+    resave: true,
+    saveUninitialized: true
+  })
+);
 //require node module for the spotify api
 app.use(express.static("./public"));
 //set up listening on local host

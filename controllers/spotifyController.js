@@ -150,8 +150,9 @@ exports.callbackMethod = (req, res) => {
     )
     .then(
       (data) => {
-        exports.exportData = data; //export all the data of the playlists..
-        exports.username = userInfo.id;
+        req.session.exportData = data; //export all the data of the playlists..
+        exports.exportData = data;
+        req.session.username = userInfo.id;
         res.redirect("playlistColours");
       },
       function (err) {

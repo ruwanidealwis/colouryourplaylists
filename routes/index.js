@@ -20,12 +20,15 @@ module.exports = function (app) {
   });
 
   app.get("/playlistColours", (req, res) => {
-    let allPlaylistInfo = spotifyController.exportData;
-
+    let allPlaylistInfo = req.session.exportData;
+    let username = req.session.username;
+    console.log(allPlaylistInfo);
+    //console.log(spotifyController.exportData);
+    console.log(username);
     if (allPlaylistInfo == null) {
       res.redirect("/login");
     }
-    let username = spotifyController.username;
+
     res.render("playlistColours.pug", {
       playListArray: allPlaylistInfo,
       name: username,
@@ -34,12 +37,12 @@ module.exports = function (app) {
     //when ajax clicks on the playlist, its a post request that his to redirect to the tab with the playlist Id,
   });
   app.get("/playlistColours/:id", (req, res) => {
-    let allPlaylistInfo = spotifyController.exportData; //data returned from spotify controller
+    let allPlaylistInfo = req.session.exportData; //data returned from spotify 
     //console.log(allPlaylistInfo);
     let playlistQueried = {};
     allPlaylistInfo.forEach((playlist) => {
       //console.log(req.params.id);
-      if (req.params.id === playlist.id) {
+      if (req.params.id === playlist.__id) {
         console.log("hi");
         playlistQueried = playlist;
       }
@@ -47,10 +50,10 @@ module.exports = function (app) {
 
     colourGenerator
       .getPalette(
-        playlistQueried.audioFeatures.valence,
-        playlistQueried.audioFeatures.energy,
-        playlistQueried.audioFeatures.mode,
-        playlistQueried.audioFeatures.danceability
+        playlistQueried.__audioFeatures.__valence,
+        playlistQueried.__audioFeatures.__energy,
+        playlistQueried.__audioFeatures.__mode,
+        playlistQueried.__audioFeatures.__danceability
       )
       .then((palette) => {
         console.log(palette);
@@ -59,12 +62,12 @@ module.exports = function (app) {
         console.log(playlistQueried.coverUrl);
         let colourInfo = colourGenerator.colourInfo;
         console.log(colourInfo);
-        let username = spotifyController.username;
+        let username = req.session.username;
         res.json({
           playListArray: allPlaylistInfo,
           palette: palette,
-          playlistName: playlistQueried.name,
-          coverImage: playlistQueried.coverUrl,
+          playlistName: playlistQueried.__name,
+          coverImage: playlistQueried.__coverUrl,
           name: username,
           colourInfo: colourInfo,
         });
@@ -75,31 +78,31 @@ module.exports = function (app) {
   });
 
   app.get("/playlistColours/:id/:songId", (req, res) => {
-    let allPlaylistInfo = spotifyController.exportData; //data returned from spotify controller
+    let allPlaylistInfo = req.session.exportData; //data returned from spotify controller
     //console.log(allPlaylistInfo);
     let playlistQueried = {};
     let songQueried = {};
     allPlaylistInfo.forEach((playlist) => {
       //console.log(req.params.id);
-      if (req.params.id === playlist.id) {
+      if (req.params.id === playlist.__id) {
         console.log("hi");
         playlistQueried = playlist;
       }
     });
 
-    playlistQueried.songs.forEach((song) => {
+    playlistQueried.__songs.forEach((song) => {
       //console.log(req.params.id);
-      if (req.params.songId === song.id) {
+      if (req.params.songId === song.__id) {
         songQueried = song;
       }
     });
     //move everything above to the jquery,ajax page
     colourGenerator
       .getPalette(
-        songQueried.audioFeatures.valence,
-        songQueried.audioFeatures.energy,
-        songQueried.audioFeatures.mode,
-        songQueried.audioFeatures.danceability
+        playlistQueried.__audioFeatures.__valence,
+        playlistQueried.__audioFeatures.__energy,
+        playlistQueried.__audioFeatures.__mode,
+        playlistQueried.__audioFeatures.__danceability
       )
       .then((palette) => {
         console.log(songQueried.coverUrl);
@@ -108,9 +111,9 @@ module.exports = function (app) {
         res.json({
           playListArray: allPlaylistInfo,
           palette: palette,
-          songName: songQueried.name,
-          coverImage: songQueried.coverUrl,
-          artist: songQueried.artist,
+          songName: songQueried.__name,
+          coverImage: songQueried.__coverUrl,
+          artist: songQueried.__artist,
           colourInfo: colourInfo,
         });
         //res.send(palette);
