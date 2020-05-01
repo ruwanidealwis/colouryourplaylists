@@ -141,7 +141,7 @@ exports.callbackMethod = (req, res) => {
     )
     .then(
       data => {
-        console.log(data);
+        //console.log(data);
         return getAveragePlaylistInfo(data);
       },
       function (err) {
@@ -252,6 +252,7 @@ async function getPlaylistInformation(userData) {
       .then(
         async function (data) {
           let playlist = data.body.items;
+          console.log(playlist);
           if (playlist != null) {
             for (let i = 0; i < data.body.items.length; i++) {
               var objReturn = async function (userData, playlist) {
