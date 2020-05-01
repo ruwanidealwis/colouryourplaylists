@@ -142,6 +142,7 @@ exports.callbackMethod = (req, res) => {
     )
     .then(
       (data) => {
+        console.log(data);
         return getAveragePlaylistInfo(data);
       },
       function (err) {
@@ -183,6 +184,8 @@ function getAveragePlaylistInfo(playlistArray) {
   let minorCount = 1;
   playlistArray.forEach((playlist) => {
     playlist.songs.forEach((song) => {
+      //console.log(playlist);
+
       avgValence = avgValence + song.audioFeatures.valence;
 
       avgDanceability = avgDanceability + song.audioFeatures.danceability;
