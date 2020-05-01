@@ -2,7 +2,11 @@ let SpotifyWebApi = require("spotify-web-api-node");
 let crypto = require("crypto");
 let clientId = "eb8c8baf926b4a2996986cd21794f34f";
 let clientSecret = "a3ddbd0186b04085988a1eb73777e501";
-let redirectUri = "http://localhost:3000/callback";
+let redirectUri = "https://colouryourplaylists.herokuapp.com/callback";
+if(process.env.PORT==null)
+{
+  let redirectUri = "https://localhost:8000/callback";
+}
 let scopes = ["playlist-read-private", "user-read-email"]; //get the users account and their private playlists
 let state = crypto.randomBytes(15).toString("hex"); //random state generator
 let userInfo = {};
