@@ -303,7 +303,7 @@ async function getMusicInfo(userId, playlistId, playlistName, imageURL) {
     .then(
       function (data) {
         data.body.items.forEach((songItem) => {
-          if (songItem.is_local != true && songItem.track.name != "") {
+          if (songItem.is_local != true && songItem.track.name != "" && songItem!="null") {
             //only take audio analysis if its not a local file
             let artistArray = [];
             //add code to get the audio features for each song
