@@ -14,11 +14,12 @@ class playListInfo {
 //get the basic music information for both songs and playlist
 //playlists have their own audio audioFeatures
 //songs also have their own audio features
-  constructor(name,id,songs)  {
+  constructor(name,id,songs,coverUrl)  {
     this.__name=name;
     this.__id=id;
     this.__songs=songs;
     this.__audioFeatures;
+    this.__coverUrl =coverUrl;
 
   }
   set songs(newSongs){
@@ -39,24 +40,35 @@ class playListInfo {
   get audioFeatures(){
     return this.__audioFeatures;
   }
+  get coverUrl(){
+    return this.__coverUrl;
+  }
 };
 
 class songInfo {
-  constructor(name,id,artist,duration)
+  constructor(name,id,artist,duration,coverUrl)
   {
     this.__name=name;
     this.__id=id;
     this.__audioFeatures;
     this.__artist = artist;
     this.__duration = duration;
+    this.__coverUrl =coverUrl;
   }
 
   get id(){
     return this.__id;
   }
+  get coverUrl(){
+    return this.__coverUrl;
+  }
   get name(){
     return this.__name;
   }
+  get artist(){
+    return this.__artist;
+  }
+
 
   set audioFeatures(newAudioFeatures){
     this.__audioFeatures=newAudioFeatures;
@@ -133,7 +145,8 @@ spotifyApi.authorizationCodeGrant(req.query.code).then
  }).then ( data =>
    {
      exports.exportData = data; //export all the data of the playlists..
-     //console.log(data);
+     exports.username = userInfo.id;
+     console.log(data);
      res.redirect('playlistColours');
    }
  );
@@ -170,6 +183,8 @@ function getAveragePlaylistInfo(playlistArray)
      //avgValence = playlist.songs => playlist.songs.reduce((a,b) => a + b, 0) / playlist.songs.length
     playlist.songs.forEach( song =>
    {
+    console.log(playlist.name);
+     console.log(song);
      avgValence = avgValence + song.audioFeatures.valence;
 
      avgDanceability = avgDanceability + song.audioFeatures.danceability;
@@ -257,7 +272,7 @@ async function getPlaylistInformation(userData)
             //console.log(data.body.items.length);
             var objReturn = async function(userData,playlist)
             {
-              return getMusicInfo(userData.id,playlist[i].id,playlist[i].name).
+              return getMusicInfo(userData.id,playlist[i].id,playlist[i].name,playlist[i].images[0].url).
               then ( async function(playlistObj)
             { songIdArray =[];
 
@@ -284,7 +299,7 @@ let  returnArray = await returnVal(userData);
 //console.log(returnArray);
 return returnArray;
 };
- async function getMusicInfo(userId,playlistId,playlistName)
+ async function getMusicInfo(userId,playlistId,playlistName,imageURL)
 {
 
  let songArray = []; //empty array
@@ -297,19 +312,21 @@ return returnArray;
   }).then(function(data) {
       //console.log('The playlist contains these tracks', data.body);
       data.body.items.forEach( songItem => {
-        if(songItem.is_local!=true){
+        if(songItem.is_local!=true && songItem.track.name !=""){
           //only take audio analysis if its not a local file
         let artistArray = [];
         //add code to get the audio features for each song
         songItem.track.artists.forEach (artistInfo => artistArray.push(artistInfo.name));
-        let song = new songInfo(songItem.track.name, songItem.track.id, artistArray,songItem.track.duration_ms);
+        console.log(songItem.track.name);
+        console.log(songItem.track.album.images[0].url);
+        let song = new songInfo(songItem.track.name, songItem.track.id, artistArray,songItem.track.duration_ms,songItem.track.album.images[0].url);
         artistArray = []; //empty the array so it can be reassigned
         //console.log(song);
         songArray.push(song);
         }
       }
       );
-      let playlistObj = new playListInfo(playlistName,playlistId,songArray);
+      let playlistObj = new playListInfo(playlistName,playlistId,songArray,imageURL);
               //console.log(playlistObj);
     return playlistObj; //return a new playlist object}
 

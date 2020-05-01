@@ -2,22 +2,75 @@ doctype html
 html(lang='en')
  head
    title Paylist of Colours
+   link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css')
+   script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
+   script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js')
+   script(type='text/javascript' src='/assets/handlerPlaylists.js')
+   link(href="/assets/PlaylistColours.css" rel="stylesheet"   type="text/css")
+   link(href="https://fonts.googleapis.com/css?family=Inconsolata|Source+Sans+Pro:wght@300" rel="stylesheet")
  body
-   h1 Here are your playlists!
-   div.container
-   ul
-   each playlist in playListArray
-     - val = playlist.name
-     - id  = playlist.id
-       a(href='/#{id}') #{val}
-- if (palette)
-    div#palette
-      ul
-      each colour in palette
-        li #{colour}
-- if (info)
-   div#information
-      - name = playlist.name
-        p #{name}
-        p See how these values influenced the 1st 3rd and 5th colours!2nd and 4th are there to create a more uniform palette
-        p Click on each song on the playlist to see how the palette changes!
+   nav(class="navbar navbar-light" style="background-color: #783F4F;")
+        a.navbar-brand.float-md-left.no-gutters(href='#')
+            .navbarText Playlist Colour Generator
+        a.navbar-brand.float-md-left.no-gutters(href='#')
+            .navbarText Github
+   .row.justify-content-center.no-gutters 
+        div.container.jumbotron.justify-content-center
+          div.row
+            div.col-sm-4
+              h5 #{name}'s Playlists
+              ul.list-unstyled.components#allUserInfo
+                each playlist in playListArray
+                  - var playlistName = playlist.name
+                  - var playListid  = playlist.id
+                  li
+                    button(class="playlistList btn active playlistNameButton" id=playListid data-toggle="dropdown collapse" aria-pressed="true" aria-expanded="false") #{playlistName}
+                    button.btn.dropdown-toggle.dropdown-toggle-split(type='button' data-toggle='dropdown')    
+                    div.dropdown-menu
+                      each song in playlist.songs
+                            - var songName = song.name
+                            - var songId  = song.id
+                              a.songList.dropdown-item(href='#' id=songId) #{songName}                 
+            div.col-sm-8        
+                div#info.no-gutters
+                  .row.no-gutters
+                    .col-md-4
+                      .card.no-gutters
+                        img.card-img-top#cover
+                        h6.card-title#name  
+                        p.card-body#description
+                    .col-md-8
+                      .textInfo
+                        h5 Your Own Custom Playlist Colour Palette  
+                        .algorithmInfo Each playlist has its own colour palette based on the features of the songs it contains. Your colour palette is 
+                        .algorithmInfo Your colour palette is generated using 
+                         strong 4 factors: 
+                         | how 
+                         strong angry/sad 
+                         | the songs of the playlist sounds, 
+                         strong the energy, danceability 
+                         | and finally the 
+                         strong mode 
+                         | of the song major/minor
+                        .algorithmInfo Click on a playlist from the left corner to generate a colour palette and hover over the colours to see why it was generated!
+                        .algorithmInfo Click on each song on a playlist to see the difference between your playlist and individual songs
+                        //.algorithmInfo Note: the 1st, 3rd and 5th colour are all exclusivley based on the playlist, the 2nd and 5th colours are to create a more pleasing palette
+                div#palette
+                    div.row.span4.justify-content-center
+                        .col-md-2.box#colour1.justify-content-center
+                           #Colour1Info.colourInfo
+                        .col-md-2.box#colour2.justify-content-center
+                            #Colour2Info.colourInfo
+                        .col-md-2.box#colour3.justify-content-center
+                           #Colour3Info.colourInfo
+                        .col-md-2.box#colour4.justify-content-center
+                          #Colour4Info.colourInfo
+                        .col-md-2.box#colour5.justify-content-center
+                          #Colour5Info.colourInfo
+                        
+                            
+                        
+                  
+                    
+              

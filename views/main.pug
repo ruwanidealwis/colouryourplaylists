@@ -1,9 +1,23 @@
 doctype html
 html(lang='en')
  head
-   script(src='../public/assets/handler.js')
    title Paylist of Colours
+   script(src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous")
+   script(type='text/javascript' src='/assets/handler.js')
+   link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
+   link(href="/assets/styleMain.css" rel="stylesheet"   type="text/css")
+   link(href="https://fonts.googleapis.com/css?family=Inconsolata|Source+Sans+Pro:wght@300" rel="stylesheet")
+   
  body
-   h1 Click to find out!
-   div#login
-    button#loginId Start
+ header
+  nav(class="navbar navbar-light" style="background-color: #783F4F;")
+        a.navbar-brand.float-md-left.no-gutters(href='#')
+            .navbarText Playlist Colour Generator
+        a.navbar-brand.float-md-left.no-gutters(href='#')
+            .navbarText Github
+ .row.justify-content-center.no-gutters  
+    .jumbotron.align-middle.rounded-0
+      p.no-gutters#title
+      p.no-gutters Login to spotify to see custom colour palettes for all your playlists!
+      div#login
+         button(class="btn-lg" id="loginId") Login

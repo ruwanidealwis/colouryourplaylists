@@ -1,0 +1,70 @@
+body{  
+    font-family: "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size:30px;
+    
+    background-color: #bb8b7e;
+    text-align:center;
+}
+h1{
+    font-family: "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-align:left;
+    color:black;
+    font-size:25px;
+    margin:0% 3% 0% 0%;
+}
+.jumbotron
+{
+   
+    padding: 5% 8% 5% 8%;
+    margin:8%;
+    width:30%; 
+    background-color:white;
+    box-shadow: 15px 15px #783F4F;
+    
+    
+   
+}
+.my_img{
+    height:300px; /* give your required height */
+    background:url('https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=953&q=80');
+    background-size:cover;
+  }
+.navbar
+{
+    background-color:back;
+}
+.navbar-expand-lg
+{
+    background-color:back;
+}
+#loginId
+{
+    color:white;
+    font-size:17px;
+    background-color: #bb8b7e;
+
+    border-radius:30px;
+    font-weight:bold;
+    font-family: 'Source Sans Pro', sans-serif;
+
+}
+p{
+    color:#783F4F;
+    font-size:20px;
+    font-weight:light;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+#title{
+    color:#783F4F;
+    font-size:40px;
+    font-weight:bold;
+    font-family:Inconsolata;
+
+
+}
+.navbarText{
+    font-weight:light;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size:16px;
+    color:white;
+}
