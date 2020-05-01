@@ -11,7 +11,7 @@ $('#loginId').on('click', function()
 
 });
 });
-//taken from w3 schools
+//taken from w3 schools: https://www.w3schools.com/howto/howto_js_typewriter.asp
 let i=0;
 function typeWriter() {
     let txt = "Color Your Playlists"

@@ -10,11 +10,7 @@ html(lang='en')
    link(href="/assets/PlaylistColours.css" rel="stylesheet"   type="text/css")
    link(href="https://fonts.googleapis.com/css?family=Inconsolata|Source+Sans+Pro:wght@300" rel="stylesheet")
  body
-   nav(class="navbar navbar-light" style="background-color: #783F4F;")
-        a.navbar-brand.float-md-left.no-gutters(href='#')
-            .navbarText Playlist Colour Generator
-        a.navbar-brand.float-md-left.no-gutters(href='#')
-            .navbarText Github
+   include nav.pug
    .row.justify-content-center.no-gutters 
         div.container.jumbotron.justify-content-center
           div.row
@@ -42,7 +38,7 @@ html(lang='en')
                         p.card-body#description
                     .col-md-8
                       .textInfo
-                        h5 Your Own Custom Playlist Colour Palette  
+                        h5 Your Own Custom Playlist Colour Palette 
                         .algorithmInfo Each playlist has its own colour palette based on the features of the songs it contains. Your colour palette is 
                         .algorithmInfo Your colour palette is generated using 
                          strong 4 factors: 
@@ -53,9 +49,12 @@ html(lang='en')
                          | and finally the 
                          strong mode 
                          | of the song major/minor
-                        .algorithmInfo Click on a playlist from the left corner to generate a colour palette and hover over the colours to see why it was generated!
-                        .algorithmInfo Click on each song on a playlist to see the difference between your playlist and individual songs
-                        //.algorithmInfo Note: the 1st, 3rd and 5th colour are all exclusivley based on the playlist, the 2nd and 5th colours are to create a more pleasing palette
+                        .algorithmInfo
+                          | Click on a playlist from the left corner to generate a colour palette (using this cool 
+                          a.link(href='http://colormind.io/api-access/' target="_blank")  API
+                          | )
+                        .algorithmInfo Hover over the colours to see why it was generatedand click on each song of the playlist to see how it changes
+
                 div#palette
                     div.row.span4.justify-content-center
                         .col-md-2.box#colour1.justify-content-center

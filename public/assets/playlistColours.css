@@ -72,7 +72,7 @@ ul{
     height:400px;
     width:70%;
     overflow:hidden; overflow-y:scroll;
-    background-color: #cccccc;
+    background-color: #DCDCDC;
 }
 #info
 {
@@ -194,8 +194,12 @@ h5{
 #cover
 {
     min-width:auto;
-    max-width:235px;
+    max-width:241px;
     min-height:auto;
-    max-height:235px;
+    max-height:241px;
 
+}
+.link{
+    color: #cccccc;
+   
 }
