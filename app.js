@@ -20,7 +20,10 @@ app.set("view engine", "pug");
 //require node module for the spotify api
 app.use(express.static("./public"));
 //set up listening on local host
-let port = 3000;
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
 app.listen(port, () => console.log(`app listening on port ${port}`)); //app is now listening on port
 
 index(app);
