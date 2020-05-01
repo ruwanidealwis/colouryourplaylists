@@ -26,7 +26,15 @@ module.exports =  function(app)
 
 app.get("/playlistColours", (req,res)=>
 {
+
+
+
  let allPlaylistInfo = spotifyController.exportData;
+
+ if(allPlaylistInfo==null)
+ {
+   res.redirect('/login');
+ }
  let username = spotifyController.username;
  res.render('playlistColours.pug', {playListArray:allPlaylistInfo, name:username});
   //get all the iformation about all the playlists along with an empty side screen

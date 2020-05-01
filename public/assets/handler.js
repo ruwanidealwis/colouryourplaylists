@@ -1,11 +1,11 @@
 $(document).ready(function(){
 
     typeWriter();
-    console.log("hi");
+   
 
 $('#loginId').on('click', function() 
 {
-    console.log("hi");
+    
     window.location.replace('/login');
 
 

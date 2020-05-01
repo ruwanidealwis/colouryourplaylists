@@ -28,7 +28,7 @@ let valenceColourOptionVeryHigh = [new colour("champagne", [255,221,153]), new c
 
 let energyColourOptionVeryLow = [new colour("Cinerious", [146,136,125]), new colour("Camaflouge Brown",[125,117,108] ),new colour("mauve",[99,54,63] ) ]
 let energyColourOptionSomehwatLow = [new colour("copper", [174,124,67]), new colour("hunter green",[39,104,53]),new colour("dark slate blue",[51,74,129] )  ] //make mostly blues/greens
-let energyColourOptionSomehwatHigh = [new colour("copper rose", [165,91,105]), new colour("Plum", [140,79,146]),new colour("aqua",[61,150,155] ) ,new colour("papya",[235, 94, 52] ) ] //purples/reds/pinks
+let energyColourOptionSomehwatHigh = [new colour("copper rose", [165,91,105]), new colour("Plum", [140,79,146]),new colour("aqua",[61,150,155] ) ,new colour("papaya",[235, 94, 52] ) ] //purples/reds/pinks
 let energyColourOptionVeryHigh = [new colour("fuschia",[188,88,197]), new colour("violet",[135,36,194]),new colour("fire engine red",[195,37,37]) ]
 
 let majorColour = [new colour("pastel blue", [159, 203, 245]), new colour("pastel purple",[236, 195, 255] ),new colour("pastel pink",[255, 196, 206]),new colour("peach",[255, 212, 156])];
@@ -63,14 +63,12 @@ function changeIntensity(colourObject,constant){
 exports.getPalette = (valence,energy,mode,danceability) =>
 {
   coloursArray = getInitialValues(valence,energy,mode,danceability);
-  console.log(coloursArray);
    let returnVal =  makeAPIRequest(coloursArray).then(function (posts) {
-    console.log('Success!', posts);
     exports.colourInfo = infoAboutColours (coloursArray,valence,energy,danceability, mode);
     return posts;
 	})
 	.catch(function (error) {
-		console.log('Something went wrong', error);
+		console.log('There was an error', error);
 	});
 
 
@@ -85,60 +83,49 @@ function getInitialValues(valence,energy,mode,danceability)
   if(energy>0 && energy<=0.25){
     let energycolour = energyColourOptionVeryLow[Math.floor(Math.random() * energyColourOptionVeryLow.length)];
     let colourToAdd = JSON.parse(JSON.stringify(energycolour))
-    console.log(colourToAdd)
     overallIinfo.energy="very low";
     colours.push(colourToAdd);
   }
   else if(energy<=0.50){
     let energycolour = energyColourOptionSomehwatLow[Math.floor(Math.random() * energyColourOptionSomehwatLow.length)];
     let colourToAdd = JSON.parse(JSON.stringify(energycolour))
-    console.log(colourToAdd)
     overallIinfo.energy="somewhat low";
     colours.push(colourToAdd);
   }
   else if(energy<=0.75){
     let energycolour = energyColourOptionSomehwatHigh[Math.floor(Math.random() * energyColourOptionSomehwatHigh.length)];
-    //et energycolour = energyColourOptionSomehwatHigh[Math.floor(Math.random() * energyColourOptionSomehwatHigh.length)];
-    //console.log("hi");
-    //console.log(energyColourOptionSomehwatHigh);
     overallIinfo.energy="somewhat high";
     let colourToAdd = JSON.parse(JSON.stringify(energycolour))
-    console.log(colourToAdd)
     colours.push(colourToAdd);
   }
   else {
     let energycolour = energyColourOptionVeryHigh[Math.floor(Math.random() * energyColourOptionVeryHigh.length)];
     let colourToAdd = JSON.parse(JSON.stringify(energycolour));
     overallIinfo.energy="very high";
-    console.log(colourToAdd)
     colours.push(colourToAdd);
     
   }
-  console.log(colours);
   if(danceability<=0.5){
     colours.forEach(colourObj =>
     {
       overallIinfo.danceability="low"
-      console.log(colourObj);
+      
       changeIntensity(colourObj,0.5);
-        console.log(colourObj);
+    
     });
   }
   else {
     colours.forEach(colourObj =>
     {
-      //console.log(colourObj);
-      //console.log(colourObj.__rgbCode);
-      overallIinfo.danceability=" high"
+      
+      overallIinfo.danceability="high"
       changeIntensity(colourObj,1.5);
-      //console.log(colourObj);
+      
     });
 
   }
-  console.log(colours);
   if(valence>0 && valence<=0.25){
      let valencecolour = valenceColourOptionVeryLow[Math.floor(Math.random() * valenceColourOptionVeryLow.length)];
-     //console.log("Valcne: " + valencecolour);
      overallIinfo.valence="mostly";
      let colourToAdd = JSON.parse(JSON.stringify(valencecolour))
      colours.push(colourToAdd);
@@ -146,14 +133,14 @@ function getInitialValues(valence,energy,mode,danceability)
   else if(valence<=0.50){
     let valencecolour = valenceColourOptionSomehwatLow[Math.floor(Math.random() * valenceColourOptionSomehwatLow.length)];
     let colourToAdd = JSON.parse(JSON.stringify(valencecolour))
-    //console.log("Valcne: " + colourToAdd);
+    
     overallIinfo.valence="several";
     colours.push(colourToAdd);
   }
   else if(valence<=0.75){
     let valencecolour = valenceColourOptionSomehwatHigh[Math.floor(Math.random() * valenceColourOptionSomehwatHigh.length)];
     let colourToAdd = JSON.parse(JSON.stringify(valencecolour));
-    //console.log("Valcne: " + colourToAdd);
+   
     overallIinfo.valence="some";
      colours.push(colourToAdd);
   }
@@ -161,7 +148,6 @@ function getInitialValues(valence,energy,mode,danceability)
     let valencecolour = valenceColourOptionVeryHigh[Math.floor(Math.random() * valenceColourOptionVeryHigh.length)];
     
     let colourToAdd = JSON.parse(JSON.stringify(valencecolour));
-    console.log("Valcne: " + colourToAdd);
     overallIinfo.valence="barely any ";
      colours.push(colourToAdd);
 
@@ -204,9 +190,7 @@ function getInitialValues(valence,energy,mode,danceability)
 
     if (http.readyState !== 4) return;  
   	if(http.status >= 200 && http.status <300) {
-  		console.log("made request");
       let value = JSON.parse(http.responseText).result;
-      console.log(value);
        resolve(value);
       //callbackFunction(palette);
   	}
@@ -218,7 +202,7 @@ function getInitialValues(valence,energy,mode,danceability)
 				});
 			}
   };
-  console.log(data);
+  
   http.open("POST", apiURL, true);
   http.send(JSON.stringify(data));
 });

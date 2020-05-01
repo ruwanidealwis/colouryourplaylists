@@ -115,7 +115,7 @@ var spotifyApi = new SpotifyWebApi({
 
 let authorizeURL = spotifyApi.createAuthorizeURL(scopes, state); //generated
 exports.authorizeURL=authorizeURL; //export the value
-//console.log(authorizeURL); //the authorization url;;
+
 
 // Retrieve an access token and a refresh token
 exports.callbackMethod = (req,res)=> {
@@ -135,20 +135,23 @@ spotifyApi.authorizationCodeGrant(req.query.code).then
 
   }).
  then (data => {
-   //console.log("hiya");
+   
    return getPlaylistInformation(data);
- }).
+ },function(err) {
+  console.log('Something went wrong!', err);
+}).
  then ( data => {
-   //console.log("hi");
-   //console.log(data);
   return getAveragePlaylistInfo(data);
- }).then ( data =>
+ },function(err) {
+  console.log('Something went wrong!', err);
+}).then ( data =>
    {
      exports.exportData = data; //export all the data of the playlists..
      exports.username = userInfo.id;
-     console.log(data);
      res.redirect('playlistColours');
-   }
+   },function(err) {
+    console.log('Something went wrong!', err);
+  }
  );
 };
 
@@ -157,16 +160,14 @@ spotifyApi.authorizationCodeGrant(req.query.code).then
 function getUserInformation()
 {
   return spotifyApi.getMe().then(data=> {
-     //console.log(data.body.id);
+     
      userInfo.id=data.body.id;
      userInfo.email=data.body.email;
-     //console.log(userInfo);
      return userInfo;
 
-   });
-
-  //console.log(returnVal);
-  //return returnVal;
+   },function(err) {
+    console.log('Something went wrong!', err);
+  });
 };
 function getAveragePlaylistInfo(playlistArray)
 {
@@ -179,12 +180,10 @@ function getAveragePlaylistInfo(playlistArray)
  let minorCount=1;
  playlistArray.forEach(playlist =>
    {
-     //console.log(playlist);
-     //avgValence = playlist.songs => playlist.songs.reduce((a,b) => a + b, 0) / playlist.songs.length
+     
     playlist.songs.forEach( song =>
    {
-    console.log(playlist.name);
-     console.log(song);
+    
      avgValence = avgValence + song.audioFeatures.valence;
 
      avgDanceability = avgDanceability + song.audioFeatures.danceability;
@@ -198,12 +197,10 @@ function getAveragePlaylistInfo(playlistArray)
        minorCount++;
      }
    });
- //console.log(avgValence);console.log(avgDanceability);console.log(avgEnergy);
+ 
   avgValence =  avgValence/playlist.songs.length;
   avgDanceability =  avgDanceability/playlist.songs.length;
   avgEnergy =  avgEnergy/playlist.songs.length;
-  //console.log(minorCount);
-  //console.log(majorCount);
   if(minorCount>majorCount)  {
     avgMode = 0;
   }
@@ -221,30 +218,21 @@ return playlistArray;
 
 async function getPlaylistAudioFeatures(songsID,playlistObj)
 {
-  //console.log(songsID);
-  //console.log(playlistObj);
+  
   let returnVal = spotifyApi.getAudioFeaturesForTracks(songsID)
   .then(function(data) {
-    //console.log(data.body);
+   
     let index=0;
     data.body.audio_features.forEach(audioInfo => {
-    //console.log(audioInfo);
-    if(audioInfo==null)
-    {
-      //console.log(playlistObj.name);
-    }
     playlistObj.songs[index].audioFeatures = new audioFeatures(audioInfo.valence,audioInfo.energy,audioInfo.mode,audioInfo.danceability); //need to add more information
-    //console.log(playlistObj.songs[index].audioFeatures);
-    //console.log(`done ${playlistObj.name} and ${playlistObj.songs[index].name}`);
+    
     index++;
     }
 
     )
-    //playlistObj.audioFeatures = new audioFeatures(data.body.valence,data.body.energy,data.body.key);
-    //console.log(playlistObj);
     return playlistObj;
   }, function(err) {
-    console.log("oops");
+    consolg.log("something went wrong",err);
   });
 
   return returnVal;
@@ -259,7 +247,7 @@ async function getPlaylistAudioFeatures(songsID,playlistObj)
 //use userData to get the list of playlists of the currentUser
 async function getPlaylistInformation(userData)
 {
-    //console.log(userData);
+    
    let returnVal = async function(userData)
    {  let playListArray = [];
      let completedPlaylist = spotifyApi.getUserPlaylists(userData.id, {limit:50}).then(
@@ -267,9 +255,8 @@ async function getPlaylistInformation(userData)
 
 
       let playlist = data.body.items;
-      //console.log(playlist);
+      
        for(let i=0;i< data.body.items.length;i++){
-            //console.log(data.body.items.length);
             var objReturn = async function(userData,playlist)
             {
               return getMusicInfo(userData.id,playlist[i].id,playlist[i].name,playlist[i].images[0].url).
@@ -280,54 +267,48 @@ async function getPlaylistInformation(userData)
                 songIdArray.push(playlistObj.songs[i].id);
               };
                 return getPlaylistAudioFeatures(songIdArray,playlistObj)
+            },function(err) {
+              console.log('Something went wrong!', err);
             }); //gets array of the songs
           };
           let completedPlayListObject = await objReturn(userData,playlist);
-           //console.log(completedPlayListObject);
           playListArray.push(completedPlayListObject);
         };
 
   //add to completed playlist
-  //console.log(playListArray);
+  
   return playListArray;
+  },function(err) {
+    console.log('Something went wrong!', err);
   });
-  //console.log(completedPlaylist);
  return completedPlaylist;
 };
 
 let  returnArray = await returnVal(userData);
-//console.log(returnArray);
 return returnArray;
 };
  async function getMusicInfo(userId,playlistId,playlistName,imageURL)
 {
 
  let songArray = []; //empty array
- //console.log(userId);
- //onsole.log(playlistId);
  let returnVal= spotifyApi.getPlaylistTracks(playlistId, {
     offset: 1,
     limit:  100,
     fields: 'items'
   }).then(function(data) {
-      //console.log('The playlist contains these tracks', data.body);
       data.body.items.forEach( songItem => {
         if(songItem.is_local!=true && songItem.track.name !=""){
           //only take audio analysis if its not a local file
         let artistArray = [];
         //add code to get the audio features for each song
         songItem.track.artists.forEach (artistInfo => artistArray.push(artistInfo.name));
-        console.log(songItem.track.name);
-        console.log(songItem.track.album.images[0].url);
         let song = new songInfo(songItem.track.name, songItem.track.id, artistArray,songItem.track.duration_ms,songItem.track.album.images[0].url);
         artistArray = []; //empty the array so it can be reassigned
-        //console.log(song);
         songArray.push(song);
         }
       }
       );
       let playlistObj = new playListInfo(playlistName,playlistId,songArray,imageURL);
-              //console.log(playlistObj);
     return playlistObj; //return a new playlist object}
 
     },
