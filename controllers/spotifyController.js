@@ -1,9 +1,10 @@
 let SpotifyWebApi = require("spotify-web-api-node");
 crypto = require("crypto");
 config = require("../config.js");
-let clientId = process.env.clientID;
-let clientSecret = process.env.clientSecret;
+let clientId = process.env.CLIENTID;
+let clientSecret = process.env.CLIENTSECRET;
 let redirectUri = "https://colouryourplaylists.herokuapp.com/callback";
+//running locally
 if (process.env.PORT == null) {
   clientId = config.clientID;
   clientSecret = config.clientSecret;
