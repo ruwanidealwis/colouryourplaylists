@@ -41,7 +41,7 @@ $(document).ready(function () {
           " mode";
         let colour =
           "This colour helps create a more visually pleasing palette";
-          //default text sizes
+        //default text sizes
         $("#name").css("font-size", 16);
         $("#description").css("font-size", 14);
         if (data.playlistName.length > 34 && data.playlistName.length <= 65) {
@@ -55,7 +55,7 @@ $(document).ready(function () {
         }
 
         $("#name").text(data.playlistName);
-        $("#description").text("a playlist by " + data.name);
+        $("#description").text("a cool playlist");
         $("#colour1").css({
           "background-color": "rgb(" + data.palette[0] + ")"
         });
