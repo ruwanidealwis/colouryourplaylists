@@ -1,7 +1,7 @@
 doctype html
 html(lang='en')
  head
-   title Paylist of Colours
+   title Colour Your Playlists
    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css')
    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
@@ -14,7 +14,7 @@ html(lang='en')
    .row.justify-content-center.no-gutters 
         div.container.jumbotron.justify-content-center
           div.row
-            div.col-sm-4
+            div.col-sm-4.col-xs-4
               h5 #{name}'s Playlists
               ul.list-unstyled.components#allUserInfo
                 each playlist in playListArray
@@ -56,7 +56,7 @@ html(lang='en')
                         .algorithmInfo Hover over the colours to see why it was generated and click on each song of the playlist to see how it changes
 
                 div#palette
-                    div.row.span4.justify-content-center
+                    div.row.span4.justify-content-center.h-100
                         .col-md-2.box#colour1.justify-content-center
                            #Colour1Info.colourInfo
                         .col-md-2.box#colour2.justify-content-center

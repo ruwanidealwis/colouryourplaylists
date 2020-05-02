@@ -12,6 +12,7 @@ module.exports = function (app) {
   });
 
   app.get("/login", (req, res) => {
+    console.log("on login");
     res.redirect(spotifyController.authorizeURL); //redirect to authorizaton url
   });
 
@@ -22,17 +23,21 @@ module.exports = function (app) {
   app.get("/playlistColours", (req, res) => {
     let allPlaylistInfo = req.session.exportData;
     let username = req.session.username;
+    console.log("allPlaylistInfo");
     console.log(allPlaylistInfo);
     //console.log(spotifyController.exportData);
     console.log(username);
-    if (allPlaylistInfo == null) {
+    if (allPlaylistInfo == null || allPlaylistInfo== undefined) {
+      console.log("hi on here");
       res.redirect("/login");
     }
+    else {
 
     res.render("playlistColours.pug", {
       playListArray: allPlaylistInfo,
       name: username,
-    });
+    }
+);}
     //get all the iformation about all the playlists along with an empty side screen
     //when ajax clicks on the playlist, its a post request that his to redirect to the tab with the playlist Id,
   });
